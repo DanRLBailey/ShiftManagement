@@ -31,57 +31,54 @@ namespace Shift_Management.Controllers
 
         public async Task<List<EmployeeModel>?> GetEmployees()
         {
-            using (var client = new HttpClient())
+            try
             {
-                try
-                {
-                    var rsp = await client.GetAsync("https://localhost:7156/api/Employee");
-                    var rspContent = await rsp.Content.ReadAsStringAsync();
-                    var employeeList = JsonConvert.DeserializeObject<List<EmployeeModel>>(rspContent);
-
-                    return employeeList;
-                }
-                catch (Exception e)
-                {
-                    return null;
-                }
+                var rspContent = await CallApi("Employee");
+                var employeeList = JsonConvert.DeserializeObject<List<EmployeeModel>>(rspContent);
+                return employeeList;
+            }
+            catch (Exception e)
+            {
+                return null;
             }
         }
+
         public async Task<List<EmployeeWorksShiftModel>?> GetWorkedShifts(int employeeId)
         {
-            using (var client = new HttpClient())
+            try
             {
-                try
-                {
-                    var rsp = await client.GetAsync("https://localhost:7156/api/EmployeeShift");
-                    var rspContent = await rsp.Content.ReadAsStringAsync();
-                    var employeeShiftList = JsonConvert.DeserializeObject<List<EmployeeWorksShiftModel>>(rspContent);
-
-                    return employeeShiftList.Where(s => s.Employee_ID == employeeId).ToList();
-                }
-                catch (Exception e)
-                {
-                    return null;
-                }
+                var rspContent = await CallApi("EmployeeShift");
+                var employeeShiftList = JsonConvert.DeserializeObject<List<EmployeeWorksShiftModel>>(rspContent);
+                return employeeShiftList.Where(s => s.Employee_ID == employeeId).ToList();
+            }
+            catch (Exception e)
+            {
+                return null;
             }
         }
 
         public async Task<List<ShiftModel>?> GetShiftDetails(List<EmployeeWorksShiftModel> shifts)
         {
+           try
+            {
+                var rspContent = await CallApi("Shift");
+                var shiftList = JsonConvert.DeserializeObject<List<ShiftModel>>(rspContent);
+                return shiftList.Where(s => shifts.Any(x => x.Shift_ID == s.Shift_ID)).ToList();
+            }
+            catch (Exception e)
+            {
+                return null;
+            }
+        }
+
+        private async Task<string> CallApi(string endpoint)
+        {
             using (var client = new HttpClient())
             {
-                try
-                {
-                    var rsp = await client.GetAsync("https://localhost:7156/api/Shift");
-                    var rspContent = await rsp.Content.ReadAsStringAsync();
-                    var shiftList = JsonConvert.DeserializeObject<List<ShiftModel>>(rspContent);
-
-                    return shiftList.Where(s => shifts.Any(x => x.Shift_ID == s.Shift_ID)).ToList();
-                }
-                catch (Exception e)
-                {
-                    return null;
-                }
+                var baseUrl = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}";
+                var rsp = await client.GetAsync($"{baseUrl}/api/{endpoint}");
+                var rspContent = await rsp.Content.ReadAsStringAsync();
+                return rspContent;
             }
         }
 
