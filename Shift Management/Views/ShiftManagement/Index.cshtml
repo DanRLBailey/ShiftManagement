@@ -1,0 +1,56 @@
+﻿@model IEnumerable<Shift_Management.Models.ShiftManagementModel>
+
+@{
+    ViewData["Title"] = "Shift";
+}
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="@Url.Content("~/css/styles.css")" asp-append-version="true" />
+    <title>Employee Shifts</title>
+</head>
+<body>
+
+    <h1>Employee Shifts</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Employee.Employee_ID)
+                </th>
+                <th>
+                    Full Name
+                </th>
+                @for (int i = 0; i < Model.FirstOrDefault().EmployeeShiftotalHours.Count; i++)
+                        {
+                            <th>
+                                Month @(i + 1)
+                            </th>
+                        }
+            </tr>
+        </thead>
+        <tbody>
+    @foreach (var item in Model) {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Employee.Employee_ID)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Employee.FirstName) @Html.DisplayFor(modelItem => item.Employee.Surname)
+                </td>
+                @foreach (var monthlyHours in item.EmployeeShiftotalHours)
+                    {
+                        <td>
+                            @Html.DisplayFor(modelItem => monthlyHours)
+                        </td>
+                    }
+            </tr>
+    }
+        </tbody>
+    </table>
+</body>
