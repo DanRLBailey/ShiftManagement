@@ -50,7 +50,6 @@ namespace Shift_Management.ApiControllers
         }
 
         // PUT: api/Shift/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutShiftModel(int id, ShiftModel shiftModel)
         {
@@ -81,7 +80,6 @@ namespace Shift_Management.ApiControllers
         }
 
         // POST: api/Shift
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<ShiftModel>> PostShiftModel(ShiftModel shiftModel)
         {

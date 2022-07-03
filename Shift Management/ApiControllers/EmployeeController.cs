@@ -50,7 +50,6 @@ namespace Shift_Management.ApiControllers
         }
 
         // PUT: api/Employee/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutEmployee(int id, EmployeeModel Employee)
         {
@@ -81,7 +80,6 @@ namespace Shift_Management.ApiControllers
         }
 
         // POST: api/Employee
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<EmployeeModel>> PostEmployee(EmployeeModel Employee)
         {
